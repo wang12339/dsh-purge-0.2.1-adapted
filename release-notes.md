@@ -1,3 +1,19 @@
+# 1.1.72
+
+- **适配 DSH 0.2.1-rc.2**：0.2.1 取消了 `{{cwd}}` 提示词变量（只注册 `provider`/`model`），
+  旧版插件在此会每轮对话直接失败；Web 面身份提示词从 `dsh-web-app` 搬到
+  `dsh-harness-dev-context`，旧目标文件映射打空；会话标签栏改用 DockKit 结构，
+  旧选择器找不到锚点。本仓库补齐这三处（`lib/core.js` 的 `dev-context` 映射与
+  patch #32/#53/#77、`client.js` 的 DockKit 锚点、`cordis.patch.yml` 与
+  `lib/identity.js` 去掉 `{{cwd}}`）。
+- **产物修复回填源码**：`api()` 的非 JSON 响应处理、`download()` 的
+  `revokeObjectURL` 延后、`VersionBar` 的倒计时定时器清理 —— 这三处原先只手工改在
+  构建产物 `client.js` 上，`npm run build:client` 会静默洗掉，现已全部回填进
+  `lib/redteam/client.js`，源码可逐字节重现产物。
+- **更新通道改为本仓库**（`main` 分支），避免「一键更新」把未适配的上游文件覆盖回来。
+
+---
+
 # 1.1.71
 
 ## 中文

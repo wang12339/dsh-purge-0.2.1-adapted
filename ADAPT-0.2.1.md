@@ -65,6 +65,25 @@
 不放前面会去洗那份死树，状态全 pending）。
 **本机只有单份安装**（`~/.local/lib/node_modules/@deepseek-ai/dsh`），不需要该改动。
 
+## 四、仓库层面的改动（本仓库自有）
+
+上游原版指向 `YuJunZhiXue/dsh-purge`，本仓库把「仓库指向」全部改到自己：
+
+| 位置 | 改动 | 原因 |
+|------|------|------|
+| `lib/update.js` | `REPO` → 本仓库，`STABLE_REF` → `main` | 原版指向上游 master（未适配）。上游一旦恢复，「一键更新」会把 0.2.1 适配覆盖回去 —— 必须改 |
+| `lib/redteam/ui.js` | `githubRepoOf()` 的兜底仓库 → 本仓库 | 侧栏「查看仓库」链接 |
+| `package.json` | `repository` / `homepage` / `bugs` / `dsh.install.{tarball,zip,git}` → 本仓库 | `dsh plugin add` 的安装源必须是适配版，否则装到的是上游未适配包 |
+| `client.js` | 首次安装「用户须知」文案与仓库链接改写为本仓库自己的措辞 | 原文以原作者口吻叙述（「作者将依法追究法律责任」「隐瞒作者的营利性再分发」） |
+| `.github/workflows/release.yml` | 触发分支 → `main`，仓库守卫 → 本仓库，发布地址 → 本仓库 | 原守卫写死上游仓库名，在本仓库恒不触发 |
+| `release-notes.md` | 顶部补 `1.1.72` 条目 | 发布流程要求首行等于版本号 |
+| `README.md` / `README.en.md` | 整份重写为本仓库自己的文档 | 原 README 含上游的推广位、赞助与违规商用公示章节 |
+| `README.zh-CN.md`、`docs/notice/` | 删除 | 仅服务于上游 README 的章节，且与本仓库 README 重复 |
+
+> **仍然保留的部分**（有意）：`LICENSE`（MIT 要求保留版权声明）、
+> README 末尾的「来源与许可」段、`release-notes.md` 里的上游 issue 链接（历史记录）、
+> `docs/redteam-upstream-{DISCLOSURE,LICENSE}`（第三方 redteam 内容的合规声明）。
+
 ## 安装 / 重建流程
 
 ```bash
